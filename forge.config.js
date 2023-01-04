@@ -30,7 +30,7 @@ module.exports = {
       config: {
         repository: {
           owner: "Behemoth-Quest",
-          name: "BQ-App-Release",
+          name: "BQ-App",
         },
         prerelease: true,
       },

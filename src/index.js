@@ -1,8 +1,13 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, autoUpdater } = require("electron");
 const path = require("path");
 require('update-electron-app')();
 
 if (require('electron-squirrel-startup')) app.quit();
+
+const server = "https://bq-5aouelt6z-loneth.vercel.app/";
+const url = `${server}/update/${process.platform}/${app.getVersion()}`;
+
+autoUpdater.setFeedURL({ url })
 
 let URL = "https://game.aq.com/game/";
 let root = __dirname;

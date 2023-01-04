@@ -1,7 +1,7 @@
 {
   "name": "bq-app",
   "productName": "bq-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@electron-forge/publisher-github": "^6.0.4",
     "electron-squirrel-startup": "^1.0.0",
     "update-electron-app": "^2.0.1"
   },
@@ -30,6 +31,6 @@
     "@electron-forge/maker-rpm": "^6.0.4",
     "@electron-forge/maker-squirrel": "^6.0.4",
     "@electron-forge/maker-zip": "^6.0.4",
-    "electron": "^22.0.0"
+    "electron": "8.2.0"
   }
 }
