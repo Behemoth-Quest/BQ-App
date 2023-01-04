@@ -1,13 +1,13 @@
-const { app, BrowserWindow, autoUpdater } = require("electron");
+const { app, BrowserWindow, autoUpdater, dialog } = require("electron");
 const path = require("path");
-require('update-electron-app')();
+require("update-electron-app")();
 
-if (require('electron-squirrel-startup')) app.quit();
+if (require("electron-squirrel-startup")) app.quit();
 
 const server = "https://bq-5aouelt6z-loneth.vercel.app/";
 const url = `${server}/update/${process.platform}/${app.getVersion()}`;
 
-autoUpdater.setFeedURL({ url })
+autoUpdater.setFeedURL({ url });
 
 let URL = "https://game.aq.com/game/";
 let root = __dirname;
@@ -34,7 +34,7 @@ app.commandLine.appendSwitch("ppapi-flash-version", "32.0.0.371");
 
 const createWindow = () => {
   win = new BrowserWindow({
-    icon: root + '/images/LOGO-1024.png',
+    icon: root + "/images/LOGO-1024.png",
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: false,
@@ -49,6 +49,10 @@ const createWindow = () => {
 app.whenReady().then(() => {
   app.allowRendererProcessReuse = false;
 
+  setInterval(() => {
+    autoUpdater.checkForUpdates();
+  }, 60000);
+
   createWindow();
 
   app.on("activate", () => {
@@ -58,4 +62,24 @@ app.whenReady().then(() => {
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
+});
+
+autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
+  const dialogOpts = {
+    type: "info",
+    buttons: ["Restart", "Later"],
+    title: "Application Update",
+    message: process.platform === "win32" ? releaseNotes : releaseName,
+    detail:
+      "A new version has been downloaded. Restart the application to apply the updates.",
+  };
+
+  dialog.showMessageBox(dialogOpts).then((returnValue) => {
+    if (returnValue.response === 0) autoUpdater.quitAndInstall();
+  });
+});
+
+autoUpdater.on("error", (message) => {
+  console.error("There was a problem updating the application");
+  console.error(message);
 });
